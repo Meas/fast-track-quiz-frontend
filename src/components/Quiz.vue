@@ -1,57 +1,75 @@
 <template>
-    <div>
-      <div>
-        <v-btn v-on:click="next">Next</v-btn>
-      </div>
+  <v-layout row wrap>
+    <v-flex xs12 text class="text-xs-center">
       <transition name="list-complete" mode="out-in">
-        <!-- <span v-for="(index, item) in items" v-bind:key="item" v-if="index == activeIndex" class="list-complete-item">
-          {{ item }}
-        </span> -->
-        <div :key="activeIndex" class="list-complete-item">
-          {{activeQuestion}}
-        </div>
+      <v-btn v-on:click="getQuestions" class="list-complete-item" v-if="sessionId.length == 0">Start Quiz</v-btn>
+        <v-card :key="activeIndex" class="list-complete-item" v-else>
+          <question :question="activeQuestion"
+           :onQuestionSubmit="onQuestionSubmit"
+           :isLastQuestion="isLastQuestion" />
+        </v-card>
       </transition>
-    </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+import Question from './Question'
+import preventReloadMixin from '../mixins/preventReloadMixin'
+import quizService from '../services/quizService'
+
 export default {
   name: 'Quiz',
   data() {
     return {
-      items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      activeIndex: 0
+      activeIndex: 0,
+      questions: [],
+      sessionId: '',
+      answers: []
     }
   },
+  components: {
+    Question
+  },
+  mixins: [preventReloadMixin],
   computed: {
     activeQuestion() {
-      return this.items[this.activeIndex];
+      if(this.questions.length === 0)
+        return null;
+      return this.questions[this.activeIndex];
+    },
+    isLastQuestion() {
+      return this.activeIndex+1 == this.questions.length;
     }
   },
   methods: {
-    next() {
-      this.activeIndex++;
+    async getQuestions() {
+      const response = await quizService.getQuestions(this);
+      this.questions = response.questions;
+      this.sessionId = response.id;
+      this.bindBeforeUnload();
+    },
+    onQuestionSubmit(data) {
+      this.answers.push(data);
+
+      if(!this.isLastQuestion)
+        return this.activeIndex++;
+      
+      this.submitAnswers();
+    },
+    async submitAnswers() {
+      console.log(this.answers);
     }
-    /* randomIndex: function () {
-      return Math.floor(Math.random() * this.items.length)
-    },
-    add: function () {
-      this.items.splice(this.randomIndex(), 0, this.nextNum++)
-    },
-    remove: function () {
-      this.items.splice(this.randomIndex(), 1)
-    }, */
   }
 }
 </script>
-<style>
+<style scoped>
 .list-complete-item {
-  transition: all 1s;
-  display: inline-block;
-  position: absolute;
+  transition: all 0.25s;
+  /* display: inline-block; */
+  /* position: absolute; */
 }
-.list-complete-enter
-/* .list-complete-leave-active below version 2.1.8 */ {
+.list-complete-enter {
   opacity: 0;
   transform: translateX(30px);
 }
@@ -60,6 +78,6 @@ export default {
   transform: translateX(-30px);
 }
 .list-complete-leave-active {
-  position: absolute;
+  /* position: absolute; */
 }
 </style>

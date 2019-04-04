@@ -6,7 +6,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-container>
+    <v-container fill-height>
       <v-content>
         <quiz />
       </v-content>
