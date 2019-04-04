@@ -2,7 +2,7 @@
   <v-layout row wrap>
     <v-flex xs12 text class="text-xs-center">
       <transition name="list-complete" mode="out-in">
-      <v-btn v-on:click="getQuestions" class="list-complete-item" v-if="sessionId.length == 0">Start Quiz</v-btn>
+      <v-btn v-on:click="getQuestions" class="list-complete-item" v-if="sessionId.length == 0" large>Start Quiz</v-btn>
         <v-card :key="activeIndex" class="list-complete-item" v-else>
           <question :question="activeQuestion"
            :onQuestionSubmit="onQuestionSubmit"
