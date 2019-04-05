@@ -1,13 +1,13 @@
 <template>
-  <v-form @submit.prevent="submit">
+  <v-form @submit.prevent="submit" class="px-2 py-2">
     <v-card-title primary-title>
       <h3 class="headline mb-0">
-        {{question.text}}
+        {{title}}
       </h3>
     </v-card-title>
     <v-card-actions>
       <v-radio-group v-model="answerId" class="px-3">
-        <v-radio :label="answer.text" :value="answer.id" v-for="answer in question.answers" :key="answer.id" />
+        <v-radio :label="answer.text" :value="answer.id" v-for="answer in randomizedAnswers" :key="answer.id" />
       </v-radio-group>
     </v-card-actions>
     <v-card-text class="px-0">
@@ -25,7 +25,9 @@ export default {
   props: {
     question: Object,
     onQuestionSubmit: Function,
-    isLastQuestion: Boolean
+    isLastQuestion: Boolean,
+    questionNumber: Number,
+    totalQuestions: Number
   },
   data() {
     return {
@@ -34,6 +36,9 @@ export default {
     }
   },
   computed: {
+    title() {
+      return `${this.question.text} (${this.questionNumber}/${this.totalQuestions})`
+    },
     hasAnswered() {
       return this.answerId != 0;
     },
@@ -42,6 +47,9 @@ export default {
         return 'Submit';
       return 'Next';
     },
+    randomizedAnswers () {
+      return this.question.answers.sort(() => {return 0.5 - Math.random()});
+    }
   },
   methods: {
     submit() {

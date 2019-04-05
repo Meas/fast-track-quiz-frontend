@@ -7,6 +7,7 @@ Vue.config.productionTip = false
 
 let instance = axios.create({
   baseURL: 'http://localhost:8081',
+  //baseURL: 'http://192.168.50.109:8081',
   timeout: 10000,
 });
 
