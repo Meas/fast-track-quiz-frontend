@@ -58,7 +58,12 @@ export default {
       this.submitAnswers();
     },
     async submitAnswers() {
-      console.log(this.answers);
+      const data = {
+        id: this.sessionId,
+        answers: this.answers
+      }
+      const response = await quizService.submitAnswers(this, data);
+      console.log(response);
     }
   }
 }
