@@ -2,6 +2,7 @@
 
 ## TODOS
 - Implement proper error handling on API calls
+- Implement proper env.config - currently the backend is hardcoded to be on localhost:8081
 
 ## Project setup
 ```
