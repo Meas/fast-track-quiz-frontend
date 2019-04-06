@@ -48,8 +48,7 @@ export default {
       return this.activeIndex+1 == this.questions.length;
     },
     quizFinished() {
-      //return Object.entries(this.results).length === 0 && this.results.constructor === Object
-      return Object.keys(this.results).length
+      return Object.keys(this.results).length;
     }
   },
   methods: {
@@ -85,7 +84,6 @@ export default {
       this.removeBeforeUnload();
     },
     restartQuiz() {
-      //this.$data = this.initData();
       Object.assign(this.$data, this.initData());
       this.getQuestions();
     }

@@ -1,5 +1,8 @@
 # fast-track-quiz-frontend
 
+## TODOS
+- Implement proper error handling on API calls
+
 ## Project setup
 ```
 npm install
